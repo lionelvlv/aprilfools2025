@@ -4,11 +4,15 @@ const images = {
   jordan: [
     "/jordan/1.JPG", "/jordan/2.JPG", "/jordan/3.jpg", "/jordan/4.jpg", "/jordan/5.jpg",
     "/jordan/6.jpg", "/jordan/7.jpg", "/jordan/8.jpg", "/jordan/9.JPG", "/jordan/10.JPG",
-    "/jordan/11.JPG", "/jordan/12.jpg", "/jordan/13.jpg", "/jordan/14.jpg"
+    "/jordan/11.JPG", "/jordan/12.jpg", "/jordan/13.jpg", "/jordan/14.jpg", "/jordan/15.JPG",
+    "/jordan/16.jpeg", "/jordan/17.jpg", "/jordan/18.jpg"
   ],
   lionel: [
     "/lionel/1.jpg", "/lionel/2.jpg", "/lionel/3.jpg", "/lionel/4.jpg",
-    "/lionel/5.jpg", "/lionel/6.jpg", "/lionel/7.jpg"
+    "/lionel/5.jpg", "/lionel/6.jpg", "/lionel/7.jpg", "/lionel/8.jpg",
+    "/lionel/9.jpg", "/lionel/10.jpg", "/lionel/11.jpg", "/lionel/12.jpg",
+    "/lionel/13.jpg", "/lionel/14.jpg", "/lionel/15.jpg", "/lionel/16.jpg",
+    "/lionel/17.jpg", "/lionel/18.jpg"
   ]
 };
 
