@@ -2,10 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 
 const images = {
   jordan: [
-    "/jordan/1.jpg", "/jordan/2.jpg", "/jordan/3.jpg", "/jordan/4.jpg",
-    "/jordan/5.jpg", "/jordan/6.jpg", "/jordan/7.jpg", "/jordan/8.jpg",
-    "/jordan/9.jpg", "/jordan/10.jpg", "/jordan/11.jpg", "/jordan/12.jpg",
-    "/jordan/13.jpg", "/jordan/14.jpg"
+    "/jordan/1.JPG", "/jordan/2.JPG", "/jordan/3.jpg", "/jordan/4.jpg", "/jordan/5.jpg",
+    "/jordan/6.jpg", "/jordan/7.jpg", "/jordan/8.jpg", "/jordan/9.JPG", "/jordan/10.JPG",
+    "/jordan/11.JPG", "/jordan/12.jpg", "/jordan/13.jpg", "/jordan/14.jpg"
   ],
   lionel: [
     "/lionel/1.jpg", "/lionel/2.jpg", "/lionel/3.jpg", "/lionel/4.jpg",
