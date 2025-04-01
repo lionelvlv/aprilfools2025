@@ -1,8 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 
 const images = {
-  jordan: ["/jordan/1.jpg", "/jordan/2.jpg", "/jordan/3.jpg"],
-  lionel: ["/lionel/1.jpg", "/lionel/2.jpg", "/lionel/3.jpg"]
+  jordan: [
+    "/jordan/1.jpg", "/jordan/2.jpg", "/jordan/3.jpg", "/jordan/4.jpg",
+    "/jordan/5.jpg", "/jordan/6.jpg", "/jordan/7.jpg", "/jordan/8.jpg",
+    "/jordan/9.jpg", "/jordan/10.jpg", "/jordan/11.jpg", "/jordan/12.jpg",
+    "/jordan/13.jpg", "/jordan/14.jpg"
+  ],
+  lionel: [
+    "/lionel/1.jpg", "/lionel/2.jpg", "/lionel/3.jpg", "/lionel/4.jpg",
+    "/lionel/5.jpg", "/lionel/6.jpg", "/lionel/7.jpg"
+  ]
 };
 
 const allImagePaths = [...images.jordan, ...images.lionel];
@@ -23,23 +31,30 @@ export default function GuessingGame() {
 
   useEffect(() => {
     if (gameStarted) {
-      loadRandomImage();
+      loadNewImage();
       bgmRef.current?.play();
     }
   }, [gameStarted]);
+
+  useEffect(() => {
+    if (gameOver) {
+      bgmRef.current?.pause();
+      bgmRef.current.currentTime = 0;
+    }
+  }, [gameOver]);
 
   useEffect(() => {
     if (timeLeft > 0 && !showResult && !gameOver && gameStarted) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && !showResult && !gameOver) {
-      wrongSound.current?.play();
       setShowResult(true);
       setGameOver(true);
+      setTimeout(() => wrongSound.current?.play(), 100);
     }
   }, [timeLeft, showResult, gameOver, gameStarted]);
 
-  const loadRandomImage = () => {
+  const loadNewImage = () => {
     const availableImages = allImagePaths.filter((img) => !usedImages.includes(img));
     if (availableImages.length === 0) {
       setGameOver(true);
@@ -47,7 +62,7 @@ export default function GuessingGame() {
     }
     const img = availableImages[Math.floor(Math.random() * availableImages.length)];
     const category = img.includes("jordan") ? "jordan" : "lionel";
-    setUsedImages([...usedImages, img]);
+    setUsedImages((prev) => [...prev, img]);
     setCorrectAnswer(category);
     setCurrentImage(img);
     setTimeLeft(10);
@@ -60,15 +75,15 @@ export default function GuessingGame() {
       correctSound.current?.play();
       setShowResult(true);
     } else {
-      wrongSound.current?.play();
-      setGameOver(true);
       setShowResult(true);
+      setGameOver(true);
+      setTimeout(() => wrongSound.current?.play(), 100);
     }
   };
 
   const nextRound = () => {
     if (!gameOver) {
-      loadRandomImage();
+      loadNewImage();
     }
   };
 
@@ -76,7 +91,8 @@ export default function GuessingGame() {
     setScore(0);
     setGameOver(false);
     setUsedImages([]);
-    loadRandomImage();
+    loadNewImage();
+    bgmRef.current?.play();
   };
 
   const startGame = () => {
@@ -94,13 +110,18 @@ export default function GuessingGame() {
     minHeight: "100vh",
     padding: "1rem",
     boxSizing: "border-box",
-    textAlign: "center"
+    textAlign: "center",
+    backgroundColor: "black",
+    color: "lime",
+    fontFamily: "'Courier New', monospace",
+    position: "relative"
   };
 
   const cardStyle = {
-    backgroundColor: "white",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    borderRadius: "1rem",
+    backgroundColor: "black",
+    border: "4px double #00f",
+    color: "lime",
+    borderRadius: "0",
     width: "100%",
     maxWidth: "500px",
     height: "600px",
@@ -114,12 +135,14 @@ export default function GuessingGame() {
 
   const buttonStyle = {
     padding: "0.5rem 1rem",
-    borderRadius: "0.75rem",
-    border: "none",
-    color: "white",
+    borderRadius: "0.25rem",
+    border: "2px outset #0ff",
+    backgroundColor: "#222",
+    color: "lime",
     cursor: "pointer",
     fontSize: "1rem",
-    margin: "0.5rem"
+    margin: "0.5rem",
+    fontFamily: "inherit"
   };
 
   const imgStyle = {
@@ -127,7 +150,7 @@ export default function GuessingGame() {
     height: "auto",
     aspectRatio: "1.5",
     objectFit: "cover",
-    borderRadius: "1rem",
+    border: "2px solid #0ff",
     marginBottom: "1rem"
   };
 
@@ -136,12 +159,7 @@ export default function GuessingGame() {
       <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>Who's That?</h1>
 
       {!gameStarted ? (
-        <button
-          onClick={startGame}
-          style={{ ...buttonStyle, backgroundColor: "#10b981" }}
-        >
-          Play
-        </button>
+        <button onClick={startGame} style={buttonStyle}>Play</button>
       ) : (
         <div style={cardStyle}>
           <div>
@@ -154,42 +172,18 @@ export default function GuessingGame() {
           </div>
           {!showResult ? (
             <div>
-              <button
-                style={{ ...buttonStyle, backgroundColor: "#3b82f6" }}
-                onClick={() => handleGuess("jordan")}
-              >
-                Jordan
-              </button>
-              <button
-                style={{ ...buttonStyle, backgroundColor: "#22c55e" }}
-                onClick={() => handleGuess("lionel")}
-              >
-                Lionel
-              </button>
+              <button style={buttonStyle} onClick={() => handleGuess("jordan")}>Jordan</button>
+              <button style={buttonStyle} onClick={() => handleGuess("lionel")}>Lionel</button>
             </div>
           ) : gameOver ? (
             <div>
-              <p style={{ color: "#dc2626", fontWeight: "bold" }}>
-                Game Over! It was {correctAnswer.toUpperCase()}.
-              </p>
-              <button
-                style={{ ...buttonStyle, backgroundColor: "#374151" }}
-                onClick={resetGame}
-              >
-                Play Again
-              </button>
+              <p style={{ color: "red", fontWeight: "bold" }}>Game Over! It was {correctAnswer.toUpperCase()}.</p>
+              <button style={buttonStyle} onClick={resetGame}>Play Again</button>
             </div>
           ) : (
             <div>
-              <p style={{ color: "#16a34a", fontWeight: "bold" }}>
-                Correct! It was {correctAnswer.toUpperCase()}.
-              </p>
-              <button
-                style={{ ...buttonStyle, backgroundColor: "#2563eb" }}
-                onClick={nextRound}
-              >
-                Next
-              </button>
+              <p style={{ color: "lime", fontWeight: "bold" }}>Correct! It was {correctAnswer.toUpperCase()}.</p>
+              <button style={buttonStyle} onClick={nextRound}>Next</button>
             </div>
           )}
         </div>
@@ -201,6 +195,19 @@ export default function GuessingGame() {
       <audio ref={bgmRef} loop src="/audio/bgm.mp3" />
       <audio ref={correctSound} src="/audio/correct.mp3" />
       <audio ref={wrongSound} src="/audio/wrong.mp3" />
+
+      {/* CRT Scanlines */}
+      <div style={{
+        background: "repeating-linear-gradient(to bottom, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 2px)",
+        mixBlendMode: "overlay",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        pointerEvents: "none",
+        zIndex: 999
+      }} />
     </div>
   );
 }
